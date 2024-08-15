@@ -1,8 +1,10 @@
 body {
     font-family: Arial, sans-serif;
+    background-color: #7d8fe0;
     margin: 0;
-    padding: 0;
-    background-color: #f0f0f0;
+    padding: 20px;
+    display: flex;
+    height: 100vh;
 }
 
 .container {
@@ -11,9 +13,94 @@ body {
     text-align: center;
 }
 
-.weather-info {
+h1 {
+    color: #ffffff
+}
+
+.weather-search {
     padding: 20px;
-    background-color: #fff;
+    background-color: #ffffff;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.weather-report {
+    background-color: #7d8fe0;
+    border-radius: 10px;
+    padding: 20px;
+    max-width: 600px;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 20px;
+    align-items: center;
+}
+
+.weather-icon {
+    width: 80px;
+    height: 80px;
+    grid-column: 1;
+}
+
+.weather-details {
+    grid-column: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.weather-details h2 {
+    margin: 0 0 10px;
+    font-size: 24px;
+    color: #ffffff;
+}
+
+.weather-details p {
+    margin: 5px 0;
+    font-size: 24px;
+    color: #ffffff;
+}
+
+.autocomplete-container {
+    position: relative;
+    width: 300px;
+    margin: 0 auto;
+}
+
+input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    outline: none;
+}
+
+.dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-top: none;
+    border-radius: 0 0 4px 4px;
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 1000;
+    display: none;
+}
+
+.dropdown-item {
+    padding: 10px;
+    cursor: pointer;
+}
+
+.dropdown-item:hover {
+    background-color: #e9e9e9;
+}
+
+.loading {
+    padding: 10px;
+    text-align: center;
+    color: #999;
 }
