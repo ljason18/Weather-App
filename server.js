@@ -33,9 +33,8 @@ weatherApp.get('/weather/report', async (req, res) => {
     })
 
     const weatherData = response.data
-    console.log(weatherData)
     res.json({
-      city: weatherData.name + ", " + weatherData.sys.country,
+      city: city,
       temperature: weatherData.main.temp,
       description: weatherData.weather[0].description,
       feels_like: weatherData.main.feels_like,
@@ -59,43 +58,41 @@ weatherApp.get('/weather/report', async (req, res) => {
   }
 })
 
-// To be fixed
-// weatherApp.get('/weather/list', async (req, res) => {
-//   const city = req.query.city
-//   if (!city) {
-//     return res.status(400).json({ error: 'City is required' })
-//   }
+weatherApp.get('/weather/list', async (req, res) => {
+  const city = req.query.city
+  if (!city) {
+    return res.status(400).json({ error: 'City is required' })
+  }
 
-//   try {
-//     console.log(`Fetching cities with name: ${city}`)
+  try {
+    console.log(`Fetching cities with name: ${city}`)
 
-//     const response = await axios.get(LIST_URL, {
-//       params: {
-//         q: city,
-//         limit: 5,
-//         appid: API_KEY,
-//       },
-//     })
+    const response = await axios.get(LIST_URL, {
+      params: {
+        q: city,
+        limit: 5,
+        appid: API_KEY,
+      },
+    })
 
-//     const cityData = response.data
-//     res.json(cityData)
-//     console.log(res.json(cityData))
-//   } catch (error) {
-//     console.error('Error fetching city data:', error.message)
+    const cityData = response.data
+    res.json(cityData)
+  } catch (error) {
+    console.error('Error fetching city data:', error.message)
 
-//     if (error.response) {
-//       if (error.response.status === 404) {
-//         res.status(404).json({ error: 'City not found' })
-//       } else {
-//         res.status(error.response.status).json({ error: error.response.data.message })
-//       }
-//     } else if (error.request) {
-//       res.status(500).json({ error: 'No response from weather service' })
-//     } else {
-//       res.status(500).json({ error: 'Request setup error' })
-//     }
-//   }
-// })
+    if (error.response) {
+      if (error.response.status === 404) {
+        res.status(404).json({ error: 'City not found' })
+      } else {
+        res.status(error.response.status).json({ error: error.response.data.message })
+      }
+    } else if (error.request) {
+      res.status(500).json({ error: 'No response from weather service' })
+    } else {
+      res.status(500).json({ error: 'Request setup error' })
+    }
+  }
+})
 
 weatherApp.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`)

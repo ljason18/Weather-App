@@ -8,13 +8,13 @@ body {
 }
 
 .container {
-    max-width: 800px;
+    max-width: 600px;
     margin: 20px auto;
     text-align: center;
 }
 
 h1 {
-    color: #ffffff
+    color: #ffffff;
 }
 
 .weather-search {
@@ -22,6 +22,10 @@ h1 {
     background-color: #ffffff;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: relative;
+    max-width: 600px;
+    width: 100%;
+    min-height: 60px;
 }
 
 .weather-report {
@@ -73,6 +77,11 @@ input[type="text"] {
     border: 1px solid #ccc;
     border-radius: 4px;
     outline: none;
+}
+
+.city-input {
+    width: 100%;
+    max-width: 600px;
 }
 
 .dropdown {

@@ -1,71 +1,69 @@
-const city = document.getElementById('city-input')
+const cityInput = document.getElementById('city-input')
 const dropdown = document.getElementById('dropdown')
 const getWeather = document.getElementById('get-weather')
 let timeoutId
 const PORT = 3000
 
-// To be fixed
-// // Fetching list of cities
-// city.addEventListener('input', async (e) => {
-//     const query = e.target.value.trim()
-//     if (query.length === 0) {
-//         dropdown.style.display = 'none'
-//         return
-//     }
+// Fetching list of cities
+cityInput.addEventListener('input', async (e) => {
+    const query = e.target.value.trim()
+    if (query.length === 0) {
+        dropdown.style.display = 'none'
+        return
+    }
 
-//     // Display loading indicator
-//     dropdown.innerHTML = '<div class="loading">Loading...</div>'
-//     dropdown.style.display = 'block'
+    // Display loading indicator
+    dropdown.innerHTML = '<div class="loading">Loading...</div>'
+    dropdown.style.display = 'block'
 
-//     // Debounce the API call
-//     clearTimeout(timeoutId)
-//     timeoutId = setTimeout(async () => {
-//         const url = `http://localhost:${PORT}/weather/list?city=${encodeURIComponent(query)}`
-//         try {
-//             const response = await fetch(url);
-//             if (!response.ok) {
-//                 throw new Error('Network response was not ok');
-//             }
-//             const data = await response.json();
-//             console.log(data)
-//             displayDropdown(data)
-//         } catch (error) {
-//             console.error('Error fetching city data:', error);
-//             return [];
-//         }
-//         // displayDropdown(cities)
-//     }, 300)
-// })
+    // Debounce the API call
+    clearTimeout(timeoutId)
 
-// function displayDropdown(cities) {
-//     dropdown.innerHTML = '';
-//     if (cities.length > 0) {
-//         cities.forEach(city => {
-//             const item = document.createElement('div');
-//             item.classList.add('dropdown-item');
-//             item.textContent = `${city.name}, ${city.state || ''}, ${city.country}`;
-//             item.addEventListener('click', function () {
-//                 cityInput.value = `${city.name}, ${city.state || ''}, ${city.country}`;
-//                 dropdown.innerHTML = '';
-//                 dropdown.style.display = 'none';
-//             });
-//             dropdown.appendChild(item);
-//         });
-//         dropdown.style.display = 'block';
-//     } else {
-//         dropdown.style.display = 'none';
-//     }
-// }
+    timeoutId = setTimeout(async () => {
+        const url = `http://localhost:${PORT}/weather/list?city=${encodeURIComponent(query)}`
+        try {
+            const response = await fetch(url);
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            const data = await response.json();
+            displayDropdown(data)
+        } catch (error) {
+            console.error('Error fetching city data:', error);
+            return [];
+        }
+    }, 300)
+})
 
-// document.addEventListener('click', function (e) {
-//     if (!city.contains(e.target) && !dropdown.contains(e.target)) {
-//         dropdown.style.display = 'none';
-//     }
-// })
+function displayDropdown(cities) {
+    dropdown.innerHTML = '';
+    if (cities.length > 0) {
+        cities.forEach(city => {
+            const item = document.createElement('div');
+            item.classList.add('dropdown-item');
+            item.textContent = `${city.name}, ${city.state || ''}, ${city.country}`;
+            item.addEventListener('click', function () {
+                cityInput.value = `${city.name}, ${city.state || ''}, ${city.country}`;
+                dropdown.innerHTML = '';
+                dropdown.style.display = 'none';
+            });
+            dropdown.appendChild(item);
+        });
+        dropdown.style.display = 'block';
+    } else {
+        dropdown.style.display = 'none';
+    }
+}
+
+document.addEventListener('click', function (e) {
+    if (!cityInput.contains(e.target) && !dropdown.contains(e.target)) {
+        dropdown.style.display = 'none';
+    }
+})
 
 // Fetching weather data and updating UI
 getWeather.addEventListener('click', async () => {
-    const url = `http://localhost:${PORT}/weather/report?city=${encodeURIComponent(city.value)}`
+    const url = `http://localhost:${PORT}/weather/report?city=${encodeURIComponent(cityInput.value)}`
 
     try {
         const response = await fetch(url)
