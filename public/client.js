@@ -77,10 +77,17 @@ getWeather.addEventListener('click', async () => {
             <img src="https://openweathermap.org/img/wn/${data.icon}@2x.png" alt="Weather icon" class="weather-icon">
             <div class="weather-details">
                 <h2>Weather in ${data.city}</h2>
-                <p>Temperature: ${data.temperature}°C</p>
-                <p>Feels like: ${data.feels_like}°C</p>
-                <p>Description: ${data.description}</p>
-                <p>Humidity: ${data.humid}%</p>
+                <p><strong>Updated on</strong>: ${new Date(data.date_time * 1000).toLocaleString()}</p>
+                <p><strong>Temperature</strong>: ${data.temperature}°C</p>
+                <p><strong>Feels like</strong>: ${data.feels_like}°C</p>
+                <p><strong>Description</strong>: ${data.description}</p>
+                <p><strong>Humidity</strong>: ${data.humid}%</p>
+                <p><strong>Wind Speed</strong>: ${data.wind_speed} km/h</p>
+                <p><strong>Wind Direction</strong>: ${data.wind_direction}°</p>
+                <p><strong>Visibility</strong>: ${data.visibility / 1000} km</p>
+                <p><strong>Pressure</strong>: ${data.pressure} hPa</p>
+                <p><strong>Sunrise</strong>: ${new Date(data.sunrise * 1000).toLocaleTimeString()}</p>
+                <p><strong>Sunset</strong>: ${new Date(data.sunset * 1000).toLocaleTimeString()}</p>
             </div>
         `
     } catch (error) {

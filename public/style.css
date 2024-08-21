@@ -37,6 +37,7 @@ h1 {
     grid-template-columns: 1fr 2fr;
     gap: 20px;
     align-items: center;
+    text-align: left;
 }
 
 .weather-icon {
@@ -60,7 +61,7 @@ h1 {
 
 .weather-details p {
     margin: 5px 0;
-    font-size: 24px;
+    font-size: 18px;
     color: #ffffff;
 }
 

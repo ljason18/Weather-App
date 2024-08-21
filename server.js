@@ -39,7 +39,14 @@ weatherApp.get('/weather/report', async (req, res) => {
       description: weatherData.weather[0].description,
       feels_like: weatherData.main.feels_like,
       humid: weatherData.main.humidity,
-      icon: weatherData.weather[0].icon
+      icon: weatherData.weather[0].icon,
+      wind_speed: weatherData.wind.speed,
+      wind_direction: weatherData.wind.deg,
+      visibility: weatherData.visibility,
+      pressure: weatherData.main.pressure,
+      sunrise: weatherData.sys.sunrise,
+      sunset: weatherData.sys.sunset,
+      date_time: weatherData.dt
     })
   } catch (error) {
     console.error('Error fetching weather data:', error.message)
@@ -70,7 +77,7 @@ weatherApp.get('/weather/list', async (req, res) => {
     const response = await axios.get(LIST_URL, {
       params: {
         q: city,
-        limit: 5,
+        limit: 10,
         appid: API_KEY,
       },
     })
