@@ -65,20 +65,30 @@ document.addEventListener('click', function (e) {
 
 // Fetching weather data and updating UI
 getWeather.addEventListener('click', async () => {
-    const url = `http://localhost:${PORT}/weather/report?city=${encodeURIComponent(cityInput.value)}&coordinates=${encodeURIComponent(coordinates)}`;
+    const currentUrl = `http://localhost:${PORT}/weather/report?city=${encodeURIComponent(cityInput.value)}&coordinates=${encodeURIComponent(coordinates)}`;
+    const futureUrl = `http://localhost:${PORT}/weather/forecast?city=${encodeURIComponent(cityInput.value)}&coordinates=${encodeURIComponent(coordinates)}`;
 
     try {
-        const response = await fetch(url)
+        const response = await fetch(currentUrl)
 
         if (!response.ok) {
             throw new Error('City not found');
         }
 
         const data = await response.json();
+
+        const fiveDay = await fetch(futureUrl)
+        
+        if (!response.ok) {
+            throw new Error('City not found');
+        }
+
+        const forecast = await response;
+
         document.getElementById('weather-info').innerHTML = `
             <img src="https://openweathermap.org/img/wn/${data.icon}@2x.png" alt="Weather icon" class="weather-icon">
             <div class="weather-details">
-                <h2>Weather in ${data.city}</h2>
+                <h2>Current Weather</h2>
                 <p><strong>Updated on</strong>: ${new Date(data.date_time * 1000).toLocaleString()}</p>
                 <p><strong>Temperature</strong>: ${data.temperature}°C</p>
                 <p><strong>Feels like</strong>: ${data.feels_like}°C</p>
