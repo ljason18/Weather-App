@@ -17,16 +17,18 @@ weatherApp.use(express.static('public'))
 
 weatherApp.get('/weather/report', async (req, res) => {
   const city = req.query.city
+  const coordinates = req.query.coordinates
   if (!city) {
     return res.status(400).json({ error: 'City is required' })
   }
 
   try {
     console.log(`Fetching weather data for: ${city}`)
-
+    let coords = coordinates.split(',')
     const response = await axios.get(BASE_URL, {
       params: {
-        q: city,
+        lat: coords[0],
+        lon: coords[1],
         appid: API_KEY,
         units: 'metric',
       },
@@ -77,13 +79,14 @@ weatherApp.get('/weather/list', async (req, res) => {
     const response = await axios.get(LIST_URL, {
       params: {
         q: city,
-        limit: 10,
+        limit: 5,
         appid: API_KEY,
       },
     })
 
     const cityData = response.data
     res.json(cityData)
+    console.log(cityData)
   } catch (error) {
     console.error('Error fetching city data:', error.message)
 

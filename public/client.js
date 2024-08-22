@@ -3,6 +3,7 @@ const dropdown = document.getElementById('dropdown')
 const getWeather = document.getElementById('get-weather')
 let timeoutId
 const PORT = 3000
+let coordinates
 
 // Fetching list of cities
 cityInput.addEventListener('input', async (e) => {
@@ -44,6 +45,7 @@ function displayDropdown(cities) {
             item.textContent = `${city.name}, ${city.state || ''}, ${city.country}`;
             item.addEventListener('click', function () {
                 cityInput.value = `${city.name}, ${city.state || ''}, ${city.country}`;
+                coordinates = `${city.lat},${city.lon}`;
                 dropdown.innerHTML = '';
                 dropdown.style.display = 'none';
             });
@@ -63,7 +65,7 @@ document.addEventListener('click', function (e) {
 
 // Fetching weather data and updating UI
 getWeather.addEventListener('click', async () => {
-    const url = `http://localhost:${PORT}/weather/report?city=${encodeURIComponent(cityInput.value)}`
+    const url = `http://localhost:${PORT}/weather/report?city=${encodeURIComponent(cityInput.value)}&coordinates=${encodeURIComponent(coordinates)}`;
 
     try {
         const response = await fetch(url)
