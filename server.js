@@ -128,10 +128,7 @@ weatherApp.get("/weather/forecast", async (req, res) => {
     });
 
     const weatherForecast = response.data;
-    res.json({
-      forecast: weatherForecast.list
-    });
-    console.log(weatherForecast)
+    res.json(weatherForecast.list);
   } catch (error) {
     console.error("Error fetching weather data:", error.message);
 

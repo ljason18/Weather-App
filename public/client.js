@@ -36,20 +36,21 @@ cityInput.addEventListener('input', async (e) => {
     }, 300)
 })
 
+// Dropdown list of cities
 function displayDropdown(cities) {
     dropdown.innerHTML = '';
     if (cities.length > 0) {
         cities.forEach(city => {
-            const item = document.createElement('div');
-            item.classList.add('dropdown-item');
-            item.textContent = `${city.name}, ${city.state || ''}, ${city.country}`;
-            item.addEventListener('click', function () {
+            const name = document.createElement('div');
+            name.classList.add('dropdown-item');
+            name.textContent = `${city.name}, ${city.state || ''}, ${city.country}`;
+            name.addEventListener('click', function () {
                 cityInput.value = `${city.name}, ${city.state || ''}, ${city.country}`;
                 coordinates = `${city.lat},${city.lon}`;
                 dropdown.innerHTML = '';
                 dropdown.style.display = 'none';
             });
-            dropdown.appendChild(item);
+            dropdown.appendChild(name);
         });
         dropdown.style.display = 'block';
     } else {
@@ -57,6 +58,7 @@ function displayDropdown(cities) {
     }
 }
 
+// Close dropdown when clicking outside
 document.addEventListener('click', function (e) {
     if (!cityInput.contains(e.target) && !dropdown.contains(e.target)) {
         dropdown.style.display = 'none';
@@ -66,7 +68,6 @@ document.addEventListener('click', function (e) {
 // Fetching weather data and updating UI
 getWeather.addEventListener('click', async () => {
     const currentUrl = `http://localhost:${PORT}/weather/report?city=${encodeURIComponent(cityInput.value)}&coordinates=${encodeURIComponent(coordinates)}`;
-    const futureUrl = `http://localhost:${PORT}/weather/forecast?city=${encodeURIComponent(cityInput.value)}&coordinates=${encodeURIComponent(coordinates)}`;
 
     try {
         const response = await fetch(currentUrl)
@@ -77,13 +78,9 @@ getWeather.addEventListener('click', async () => {
 
         const data = await response.json();
 
-        const fiveDay = await fetch(futureUrl)
-        
         if (!response.ok) {
             throw new Error('City not found');
         }
-
-        const forecast = await response;
 
         document.getElementById('weather-info').innerHTML = `
             <img src="https://openweathermap.org/img/wn/${data.icon}@2x.png" alt="Weather icon" class="weather-icon">
@@ -102,7 +99,57 @@ getWeather.addEventListener('click', async () => {
                 <p><strong>Sunset</strong>: ${new Date(data.sunset * 1000).toLocaleTimeString()}</p>
             </div>
         `
+        await fiveDay(cityInput, coordinates);
     } catch (error) {
         document.getElementById('weather-info').innerHTML = `<p>Error: ${error.message}</p>`
     }
 });
+
+async function fiveDay(cityInput, coordinates) {
+    const futureUrl = `http://localhost:${PORT}/weather/forecast?city=${encodeURIComponent(cityInput.value)}&coordinates=${encodeURIComponent(coordinates)}`;
+
+    try {
+        const response = await fetch(futureUrl)
+
+        if (!response.ok) {
+            throw new Error('City not found');
+        }
+
+        const data = await response.json();
+        const sortDates = {}
+        data.forEach(threeHour => {
+            const date = new Date(threeHour.dt * 1000).toLocaleDateString();
+            if (!sortDates[date]) {
+                sortDates[date] = [];
+            }
+            sortDates[date].push(threeHour);
+        });
+
+        document.getElementById('fiveDay-forecast').innerHTML = '<h2>5 Day Forecast: 3 Hour Intervals</h2>';
+        Object.keys(sortDates).forEach(date => {
+            const container = document.createElement('div');
+            container.classList.add('forecast-day');
+            const dateElement = document.createElement('h3');
+            dateElement.textContent = date;
+            container.appendChild(dateElement);
+
+            sortDates[date].forEach(threeHour => {
+                const { main: { temp, temp_min, temp_max }, weather } = threeHour;
+
+                const weatherDetails = `
+                <h3>Time: ${new Date(threeHour.dt * 1000).toLocaleTimeString()}</h3>
+                <p>Temperature: ${temp}°C</p>
+                <p>Min Temperature: ${temp_min}°C</p>
+                <p>Max Temperature: ${temp_max}°C</p>
+                <p>Weather: ${weather[0].description}</p>
+                `;
+
+                container.innerHTML += weatherDetails;
+            });
+
+            document.getElementById('fiveDay-forecast').appendChild(container);
+        });
+    } catch (error) {
+        document.getElementById('fiveDay-forecast').innerHTML = `<p>Error: ${error.message}</p>`
+    }
+}
