@@ -124,6 +124,7 @@ weatherApp.get("/weather/forecast", async (req, res) => {
         lat: coords[0],
         lon: coords[1],
         appid: API_KEY,
+        units: "metric",
       },
     });
 

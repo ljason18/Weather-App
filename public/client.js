@@ -137,10 +137,10 @@ async function fiveDay(cityInput, coordinates) {
                 const { main: { temp, temp_min, temp_max }, weather } = threeHour;
 
                 const weatherDetails = `
-                <h3>Time: ${new Date(threeHour.dt * 1000).toLocaleTimeString()}</h3>
-                <p>Temperature: ${temp}°C</p>
-                <p>Min Temperature: ${temp_min}°C</p>
-                <p>Max Temperature: ${temp_max}°C</p>
+                <h4>${new Date(threeHour.dt * 1000).toLocaleTimeString()}</h4>
+                <p>Temp: ${temp}°C</p>
+                <p>Min Temp: ${temp_min}°C</p>
+                <p>Max Temp: ${temp_max}°C</p>
                 <p>Weather: ${weather[0].description}</p>
                 `;
 
