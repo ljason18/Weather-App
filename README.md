@@ -16,6 +16,6 @@ The app was developed using the following:
 * .env: for storing environment variables to secure sensitive information
 
 ## Running the Application
-Run `noder server.js` 
+Run `node server.js` 
 
 Then go to `http:localhost//3000` in your web browser
