@@ -12,10 +12,12 @@ const LIST_URL = "http://api.openweathermap.org/geo/1.0/direct";
 const API_KEY = process.env.OPENWEATHER_API_KEY;
 const FIVE_DAY_URL = "http://api.openweathermap.org/data/2.5/forecast";
 
+// Middleware
 weatherApp.use(express.json());
 weatherApp.use(cors());
 weatherApp.use(express.static("public"));
 
+// Endpoint for current weather report
 weatherApp.get("/weather/report", async (req, res) => {
   const city = req.query.city;
   const coordinates = req.query.coordinates;
@@ -36,6 +38,8 @@ weatherApp.get("/weather/report", async (req, res) => {
     });
 
     const weatherData = response.data;
+
+    // Only return the required data
     res.json({
       city: city,
       temperature: weatherData.main.temp,
@@ -70,6 +74,7 @@ weatherApp.get("/weather/report", async (req, res) => {
   }
 });
 
+// Endpoint for city list
 weatherApp.get("/weather/list", async (req, res) => {
   const city = req.query.city;
   if (!city) {
@@ -108,6 +113,7 @@ weatherApp.get("/weather/list", async (req, res) => {
   }
 });
 
+// Endpoint for weather 5 day forecast
 weatherApp.get("/weather/forecast", async (req, res) => {
   const city = req.query.city;
   const coordinates = req.query.coordinates;
@@ -149,6 +155,7 @@ weatherApp.get("/weather/forecast", async (req, res) => {
   }
 });
 
+// Start the server
 weatherApp.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);
 });

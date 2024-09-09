@@ -20,6 +20,7 @@ cityInput.addEventListener('input', async (e) => {
     // Debounce the API call
     clearTimeout(timeoutId)
 
+    // Fetch city data
     timeoutId = setTimeout(async () => {
         const url = `http://localhost:${PORT}/weather/list?city=${encodeURIComponent(query)}`
         try {
@@ -105,6 +106,7 @@ getWeather.addEventListener('click', async () => {
     }
 });
 
+// Fetching 5-day forecast data and updating UI
 async function fiveDay(cityInput, coordinates) {
     const futureUrl = `http://localhost:${PORT}/weather/forecast?city=${encodeURIComponent(cityInput.value)}&coordinates=${encodeURIComponent(coordinates)}`;
 
@@ -117,6 +119,8 @@ async function fiveDay(cityInput, coordinates) {
 
         const data = await response.json();
         const sortDates = {}
+
+        // Grouping forecast data by date
         data.forEach(threeHour => {
             const date = new Date(threeHour.dt * 1000).toLocaleDateString();
             if (!sortDates[date]) {
@@ -126,6 +130,8 @@ async function fiveDay(cityInput, coordinates) {
         });
 
         document.getElementById('fiveDay-forecast').innerHTML = '<h2>5 Day Forecast: 3 Hour Intervals</h2>';
+        
+        // Displaying forecast data
         Object.keys(sortDates).forEach(date => {
             const container = document.createElement('div');
             container.classList.add('forecast-day');
@@ -133,6 +139,7 @@ async function fiveDay(cityInput, coordinates) {
             dateElement.textContent = date;
             container.appendChild(dateElement);
 
+            // Displaying forecast data for each 3-hour interval
             sortDates[date].forEach(threeHour => {
                 const { main: { temp, temp_min, temp_max }, weather } = threeHour;
 
