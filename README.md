@@ -15,3 +15,7 @@ The app was developed using the following:
 * Git/GitHub: for version control, branching, and repository management
 * .env: for storing environment variables to secure sensitive information
 
+## Running the Application
+Run `noder server.js` 
+
+Then go to `http:localhost//3000` in your web browser
