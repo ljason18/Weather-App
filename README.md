@@ -1,4 +1,4 @@
-# Weather (Web)App
+# Weather (Web) App
 
 ## Description:
 This web-based application provides user weather forecasts for cities using OpenWeatherAPI. It also makes use of the 5-day forecast feature provided by the API as well. It uses the include Geocoding API to perform the searches.
@@ -15,7 +15,15 @@ The app was developed using the following:
 * Git/GitHub: for version control, branching, and repository management
 * .env: for storing environment variables to secure sensitive information
 
-## Running the Application
-Run `node server.js` 
+## Setup
+Requirements: 
+- Nodejs
 
-Then go to `http:localhost//3000` in your web browser
+After cloning the project run the following command to install required packages and dependencies:
+```
+npm install
+```
+## Running the Application
+Run ```node server.js``` 
+
+Then go to `http://localhost:3000` in your web browser
